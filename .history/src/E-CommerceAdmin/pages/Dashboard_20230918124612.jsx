@@ -65,7 +65,7 @@ const Dashboard = () => {
       title: "Freelancing",
       number: data?.Freelancing,
       icon: (
-        <i className="fa-brands fa-free-code-camp text-2xl text-[#660066]"></i>
+        <i className="fa-brands fa-free-code-camp text-2xl text-[#1b6975]"></i>
       ),
       bg: "#660066",
       link: "/freelancing",

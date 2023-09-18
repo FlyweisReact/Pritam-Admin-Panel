@@ -8,7 +8,7 @@ import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState({});
+  const [ data , setData ] = useState({})
 
   const token = localStorage.getItem("AdminToken");
   const Auth = {
@@ -17,19 +17,18 @@ const Dashboard = () => {
     },
   };
 
+
   const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        "https://pritam-backend.vercel.app/api/v1/admin/dashboard",
-        Auth
-      );
-      const res = response.data.data;
-      setData(res);
-    } catch {}
-  };
+    try{
+      const response = await axios.get("https://pritam-backend.vercel.app/api/v1/admin/dashboard" ,Auth)
+      const res = response.data.data
+      setData(res)
+    }catch{}
+  }
+
 
   useEffect(() => {
-    fetchData();
+   fetchData()
   }, []);
 
   const card = [
@@ -39,80 +38,74 @@ const Dashboard = () => {
       number: data?.client,
       icon: <FiUser className="text-2xl text-[#29cccc]" />,
       bg: "#29cccc",
-      link: "/clients",
+      link: "/Category",
     },
     {
       progress: "bg-green-400",
       title: "All Staff",
       number: data?.staff,
-      icon: <i className="fa-solid fa-users text-2xl text-[#3c335d]"></i>,
+      icon: <i className="fa-solid fa-cart-shopping text-2xl text-[#3c335d]"></i>,
       bg: "#3c335d",
-      link: "/staff",
+      link: "/Product",
     },
     {
       progress: "bg-green-400",
       title: "All Events",
       number: data?.Event,
-      icon: (
-        <i className="fa-solid fa-calendar-days text-2xl text-[#64878e]"></i>
-      ),
+      icon: <i className=" fa-brands fa-slack text-2xl text-[#64878e]"></i>,
       bg: "#64878e",
-      link: "/event",
+      link: "/user",
     },
-
+  
     {
       progress: "bg-green-400",
       title: "Freelancing",
       number: data?.Freelancing,
       icon: (
-        <i className="fa-brands fa-free-code-camp text-2xl text-[#660066]"></i>
+        <i className=" fa-solid fa-bag-shopping text-2xl text-[#1b6975]"></i>
       ),
-      bg: "#660066",
-      link: "/freelancing",
+      bg: "#1b6975",
+      link: "/Orders",
     },
     {
       progress: "bg-green-400",
       title: "All Sub Events",
       number: data?.subEvent,
-      icon: <i className="fa-solid fa-cloud text-2xl text-[#cc3300]" />,
-      bg: "#cc3300",
-      link: "/dashboard",
+      icon: <FiUser className="text-2xl text-[#29cccc]" />,
+      bg: "#29cccc",
+      link: "/Category",
     },
     {
       progress: "bg-green-400",
       title: "Trending Service",
-      number: data?.TrendingService,
-      icon: <i className="fa-solid fa-gears text-2xl text-[#336699]"></i>,
-      bg: "#336699",
-      link: "/trending_service",
+      number: data?.staff,
+      icon: <i className="fa-solid fa-cart-shopping text-2xl text-[#3c335d]"></i>,
+      bg: "#3c335d",
+      link: "/Product",
     },
     {
       progress: "bg-green-400",
-      title: "All Popular Job",
-      number: data?.popularJob,
-      icon: <i className=" fa-brands fa-slack text-2xl text-[#006666]"></i>,
-      bg: "#006666",
-      link: "/popular-job",
+      title: "All Events",
+      number: data?.Event,
+      icon: <i className=" fa-brands fa-slack text-2xl text-[#64878e]"></i>,
+      bg: "#64878e",
+      link: "/user",
     },
-
+  
     {
       progress: "bg-green-400",
-      title: "Who we are",
-      number: data?.whoWeare,
-      icon: <i className=" fa-solid fa-globe text-2xl text-[#000066]"></i>,
-      bg: "#000066",
-      link: "/getWhoWeAre",
-    },
-    {
-      progress: "bg-green-400",
-      title: "Courses",
-      number: data?.Course,
-      icon: <i className=" fa-solid fa-book text-2xl text-[#cc3399]"></i>,
-      bg: "#cc3399",
-      link: "/courses",
+      title: "Freelancing",
+      number: data?.Freelancing,
+      icon: (
+        <i className=" fa-solid fa-bag-shopping text-2xl text-[#1b6975]"></i>
+      ),
+      bg: "#1b6975",
+      link: "/Orders",
     },
   ];
 
+
+  
   return (
     <>
       <section className="grid md:grid-cols-4 grid-cols-2 gap-y-6 gap-x-4">

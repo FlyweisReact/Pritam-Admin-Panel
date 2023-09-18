@@ -6,8 +6,8 @@ import { AiOutlineMail } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Oval } from "react-loader-spinner";
-import logo from "../../Images/logo.png";
-import axios from "axios";
+import logo from '../../Images/logo.png'
+import axios from 'axios'
 import { Alert } from "react-bootstrap";
 
 const Login = () => {
@@ -15,28 +15,27 @@ const Login = () => {
   const [inputpass, setInputpass] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [ email , setEmail  ] = useState("")
+  const [ password , setPassword  ] = useState("")
+  const [ error , setError  ] = useState(false)
 
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post(
-        `https://pritam-backend.vercel.app/api/v1/admin/login`,
-        { email, password }
-      );
-      localStorage.setItem("AdminToken", data.accessToken);
+      const { data }  = await axios.post(`https://pritam-backend.vercel.app/api/v1/admin/login`  , { email , password })
+      localStorage.setItem("AdminToken" , data.accessToken)
       navigate("/dashboard");
       toast.success("Welcome Admin");
       setLoading(false);
     } catch (err) {
       console.log("Admin Login err => ", err);
       setLoading(false);
-      setError(true);
+      setError(true)
     }
   };
+
+
 
   return (
     <>
@@ -46,17 +45,17 @@ const Login = () => {
       >
         <form className="shadow-2xl w-96 mx-3 sm:mx-0 sm:w-4/5 md:w-4/6 lg:w-4/5 xl:w-1/2 flex flex-col items-center bg-white p-5 md:py-10 ">
           {/* <img src={logo} alt='' className="logo" /> */}
-          <p style={{ fontSize: "2rem", fontWeight: "bold" }}>Admin Panel</p>
+          <p style={{fontS}} >Admin Panel</p>
           <section className="py-2">
-            {error ? (
+            {
+              error ?
               <div className="dangerBox">
-                <Alert variant="danger">Check Your Credentials</Alert>
-                <i class="fa-solid fa-x" onClick={() => setError(false)}></i>
+              <Alert variant="danger">Check Your Credentials</Alert>
+              <i class="fa-solid fa-x" onClick={() => setError(false)}></i>
               </div>
-            ) : (
-              ""
-            )}
-
+               :""
+            }
+      
             <div className="shadow-2xl sm:w-96 border border-[rgb(241,146,46)] space-x-4 flex items-center w-64  p-2 rounded-md">
               <input
                 type="email"
@@ -96,9 +95,10 @@ const Login = () => {
               {loading ? (
                 <Oval height={30} secondaryColor="black" color="black" />
               ) : (
-                "LOG IN"
+              "LOG IN"
               )}
             </button>
+          
           </section>
         </form>
       </div>
