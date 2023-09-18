@@ -377,16 +377,10 @@ const Courses = () => {
           <FloatingLabel>
             <Form.Control
               as="textarea"
-              defaultValue={desc?.description}
+              defaultValue={desc}
               style={{ height: "100px" }}
             />
           </FloatingLabel>
-
-          <ul style={{ listStyle: "disc", marginTop: "20px" }}>
-            {desc.descriptionPoints?.map((i, index) => (
-              <li key={index}> {i} </li>
-            ))}
-          </ul>
         </Modal.Body>
       </Modal>
     );
@@ -459,7 +453,7 @@ const Courses = () => {
                         <button
                           className="md:py-2 px-3 md:px-4 py-1 rounded-sm bg-[#0c0c0c] text-white tracking-wider"
                           onClick={() => {
-                            setDesc(i);
+                            setDesc(i.description);
                             setDescModal(true);
                           }}
                         >

@@ -25,7 +25,7 @@ const Courses = () => {
   const [id, setId] = useState(null);
   const [edit, setEdit] = useState(false);
   const [total, setTotal] = useState(0);
-
+  
   const token = localStorage.getItem("AdminToken");
   const Auth = {
     headers: {
@@ -85,24 +85,11 @@ const Courses = () => {
     const [fromDay, setFromDay] = useState("");
     const [toTime, setToTime] = useState("");
     const [tillDate, setTillDate] = useState("");
-    const [descriptionPoints, setDescriptionPoints] = useState([]);
-    const [descName, setDescName] = useState("");
-
-    const queryAdder = () => {
-      setDescriptionPoints((prev) => [...prev, descName]);
-      setDescName("");
-    };
-
-    const queryRemover = (index) => {
-      setDescriptionPoints((prev) => prev.filter((_, i) => i !== index));
-    };
+    
 
     const fd = new FormData();
     Array.from(image).forEach((img) => {
       fd.append("image", img);
-    });
-    Array.from(descriptionPoints).forEach((img) => {
-      fd.append("descriptionPoints", img);
     });
     fd.append("title", title);
     fd.append("description", description);
@@ -253,13 +240,15 @@ const Courses = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Till Date</Form.Label>
-              <Form.Control
-                type="date"
-                onChange={(e) => setTillDate(e.target.value)}
-              />
-            </Form.Group>
+    
+              <Form.Group className="mb-3">
+                <Form.Label>Till Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  onChange={(e) => setTillDate(e.target.value)}
+                />
+              </Form.Group>
+
 
             <Form.Group className="mb-3">
               <Form.Label>Description</Form.Label>
@@ -270,49 +259,6 @@ const Courses = () => {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </FloatingLabel>
-            </Form.Group>
-
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-                alignItems: "center",
-                marginBottom: "30px",
-              }}
-            >
-              <Form.Group style={{ width: "80%" }}>
-                <Form.Label>Description Points</Form.Label>
-                <FloatingLabel controlId="floatingTextarea2">
-                  <Form.Control
-                    as="textarea"
-                    style={{ height: "30px" }}
-                    value={descName}
-                    onChange={(e) => setDescName(e.target.value)}
-                  />
-                </FloatingLabel>
-              </Form.Group>
-
-              <i
-                className="fa-solid fa-plus"
-                style={{ paddingTop: "30px", cursor: "pointer" }}
-                onClick={() => queryAdder()}
-              />
-            </div>
-
-            <Form.Group className="mb-3">
-              <ul style={{ listStyle: "disc" }}>
-                {descriptionPoints?.map((i, index) => (
-                  <li key={index}>
-                    {" "}
-                    {i}{" "}
-                    <i
-                      className="fa-solid fa-minus"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => queryRemover(index)}
-                    />{" "}
-                  </li>
-                ))}
-              </ul>
             </Form.Group>
 
             <Button
@@ -377,16 +323,10 @@ const Courses = () => {
           <FloatingLabel>
             <Form.Control
               as="textarea"
-              defaultValue={desc?.description}
+              defaultValue={desc}
               style={{ height: "100px" }}
             />
           </FloatingLabel>
-
-          <ul style={{ listStyle: "disc", marginTop: "20px" }}>
-            {desc.descriptionPoints?.map((i, index) => (
-              <li key={index}> {i} </li>
-            ))}
-          </ul>
         </Modal.Body>
       </Modal>
     );
@@ -459,7 +399,7 @@ const Courses = () => {
                         <button
                           className="md:py-2 px-3 md:px-4 py-1 rounded-sm bg-[#0c0c0c] text-white tracking-wider"
                           onClick={() => {
-                            setDesc(i);
+                            setDesc(i.description);
                             setDescModal(true);
                           }}
                         >

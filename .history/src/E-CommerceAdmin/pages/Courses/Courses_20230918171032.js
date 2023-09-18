@@ -382,10 +382,10 @@ const Courses = () => {
             />
           </FloatingLabel>
 
-          <ul style={{ listStyle: "disc", marginTop: "20px" }}>
-            {desc.descriptionPoints?.map((i, index) => (
-              <li key={index}> {i} </li>
-            ))}
+          <ul>
+            {i.descriptionPoints?.map((i) => 
+            <li> {} </li>
+            )}
           </ul>
         </Modal.Body>
       </Modal>

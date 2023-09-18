@@ -101,9 +101,6 @@ const Courses = () => {
     Array.from(image).forEach((img) => {
       fd.append("image", img);
     });
-    Array.from(descriptionPoints).forEach((img) => {
-      fd.append("descriptionPoints", img);
-    });
     fd.append("title", title);
     fd.append("description", description);
     fd.append("price", price);
@@ -111,6 +108,7 @@ const Courses = () => {
     fd.append("fromDay", fromDay);
     fd.append("toTime", toTime);
     fd.append("tillDate", tillDate);
+    fd.append("descriptionPoints", descriptionPoints);
 
     const postHandler = async (e) => {
       e.preventDefault();
@@ -306,9 +304,9 @@ const Courses = () => {
                     {" "}
                     {i}{" "}
                     <i
-                      className="fa-solid fa-minus"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => queryRemover(index)}
+                      className="fa-solid fa-mius"
+                      style={{ paddingTop: "30px", cursor: "pointer" }}
+                      onClick={() => queryAdder()}
                     />{" "}
                   </li>
                 ))}
@@ -377,16 +375,10 @@ const Courses = () => {
           <FloatingLabel>
             <Form.Control
               as="textarea"
-              defaultValue={desc?.description}
+              defaultValue={desc}
               style={{ height: "100px" }}
             />
           </FloatingLabel>
-
-          <ul style={{ listStyle: "disc", marginTop: "20px" }}>
-            {desc.descriptionPoints?.map((i, index) => (
-              <li key={index}> {i} </li>
-            ))}
-          </ul>
         </Modal.Body>
       </Modal>
     );
@@ -459,7 +451,7 @@ const Courses = () => {
                         <button
                           className="md:py-2 px-3 md:px-4 py-1 rounded-sm bg-[#0c0c0c] text-white tracking-wider"
                           onClick={() => {
-                            setDesc(i);
+                            setDesc(i.description);
                             setDescModal(true);
                           }}
                         >

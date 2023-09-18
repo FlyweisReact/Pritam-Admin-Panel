@@ -377,16 +377,10 @@ const Courses = () => {
           <FloatingLabel>
             <Form.Control
               as="textarea"
-              defaultValue={desc?.description}
+              defaultValue={desc}
               style={{ height: "100px" }}
             />
           </FloatingLabel>
-
-          <ul style={{ listStyle: "disc", marginTop: "20px" }}>
-            {desc.descriptionPoints?.map((i, index) => (
-              <li key={index}> {i} </li>
-            ))}
-          </ul>
         </Modal.Body>
       </Modal>
     );
