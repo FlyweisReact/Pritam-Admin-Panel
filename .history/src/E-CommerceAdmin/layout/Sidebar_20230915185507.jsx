@@ -121,13 +121,6 @@ const Sidebar = ({ hamb, setHamb }) => {
       link: "/about",
       name: "About",
     },
-    {
-      icon: (
-        <i className="fa-solid fa-image text-xl mr-3 rounded-full" />
-      ),
-      link: "/banner",
-      name: "Banner",
-    },
   ];
 
   const logOut = () => {

@@ -22,7 +22,6 @@ import Staff from "./E-CommerceAdmin/pages/Staff/Staff";
 import Inquires from "./E-CommerceAdmin/pages/Inquires/Inquires";
 import NewsLetter from "./E-CommerceAdmin/pages/Newsletter/NewsLetter";
 import About from "./E-CommerceAdmin/pages/About/About";
-import Banner from "./E-CommerceAdmin/pages/Banner/Banner";
 
 function App() {
   return (
@@ -59,7 +58,6 @@ function App() {
         <Route path="/enquires" element={<Inquires /> } />
         <Route path="/newsletter" element={<NewsLetter />} />
         <Route path="/about" element={<About />} />
-        <Route path="/banner" element={<Banner />} />
       </Routes>
     </>
   );

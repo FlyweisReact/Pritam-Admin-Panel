@@ -123,7 +123,7 @@ const Sidebar = ({ hamb, setHamb }) => {
     },
     {
       icon: (
-        <i className="fa-solid fa-image text-xl mr-3 rounded-full" />
+        <i className="fa-solid fa-image-card text-xl mr-3 rounded-full" />
       ),
       link: "/banner",
       name: "Banner",
