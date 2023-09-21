@@ -129,6 +129,13 @@ const Ads = () => {
         <Modal.Body>
           <Form onSubmit={postHandler}>
             <Form.Group className="mb-3">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
               <Form.Label>Image</Form.Label>
               <Form.Control
                 type="file"

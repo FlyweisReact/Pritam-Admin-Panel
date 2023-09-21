@@ -2,15 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import HOC from "../../layout/HOC";
-import {
-  Table,
-  Modal,
-  Form,
-  Button,
-  Alert,
-  Spinner,
-  FloatingLabel,
-} from "react-bootstrap";
+import { Table, Modal, Form, Button, Alert, Spinner } from "react-bootstrap";
 import axios from "axios";
 import { Store } from "react-notifications-component";
 
@@ -40,35 +32,65 @@ const Ads = () => {
     fetchData();
   }, []);
 
+  const deleteHandler = async () => {
+    try {
+      const { res } = await axios.delete(
+        `${Baseurl}api/v1/admin/DeleteAds/${data?._id}`,
+        Auth
+      );
+      const msg = res.message;
+      Store.addNotification({
+        title: "",
+        message: msg,
+        type: "success",
+        insert: "top",
+        container: "top-center",
+        animationIn: ["animate__animated", "animate__fadeIn"],
+        animationOut: ["animate__animated", "animate__fadeOut"],
+        dismiss: {
+          duration: 2000,
+          onScreen: true,
+        },
+      });
+      fetchData();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   function MyVerticallyCenteredModal(props) {
     const [submitLoading, setSubmitLoading] = useState(false);
-
+    const [imageLoading, setImageLoading] = useState(false);
+    const [uploaded, setUploaded] = useState(false);
     const [title, setTitle] = useState("");
-    const [image, setImage] = useState("");
-    const [images, setImages] = useState("");
-    const [description, setDescription] = useState("");
-    const [banner, setBanner] = useState("");
-    const [desc, setDesc] = useState([]);
-    const [descName, setDescName] = useState("");
-
-    const queryAdder = () => {
-      setDesc((prev) => [...prev, descName]);
-      setDescName("");
-    };
-
-    const queryRemover = (index) => {
-      setDesc((prev) => prev.filter((_, i) => i !== index));
-    };
+    const [mainImage, setMainImage] = useState("");
+    const [link, setLink] = useState("");
 
     const payload = new FormData();
     payload.append("title", title);
-    payload.append("image", image);
-    payload.append("images", images);
-    payload.append("description", description);
-    payload.append("banner", banner);
-    Array.from(desc).forEach((img) => {
-      payload.append("desc", img);
-    });
+    payload.append("link", link);
+    payload.append("image", mainImage);
+
+    const ClodinaryPost = (value) => {
+      setImageLoading(true);
+      const data = new FormData();
+      data.append("file", value);
+      data.append("upload_preset", "ml_default");
+      data.append("cloud_name", "dbcnha741");
+      fetch("https://api.cloudinary.com/v1_1/dbcnha741/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setMainImage(data.url);
+          setUploaded(true);
+          setImageLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
 
     const postHandler = async (e) => {
       e.preventDefault();
@@ -128,25 +150,21 @@ const Ads = () => {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={postHandler}>
+            {imageLoading === true ? (
+              <Spinner animation="border" role="status" />
+            ) : (
+              ""
+            )}
+            {uploaded === true ? (
+              <Alert variant="success">Image Uploaded Successfully</Alert>
+            ) : (
+              ""
+            )}
             <Form.Group className="mb-3">
               <Form.Label>Image</Form.Label>
               <Form.Control
                 type="file"
-                onChange={(e) => setImage(e.target.files[0])}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Main Image</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => setBanner(e.target.files[0])}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Description Image</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => setImages(e.target.files[0])}
+                onChange={(e) => ClodinaryPost(e.target.files[0])}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -156,59 +174,12 @@ const Ads = () => {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </Form.Group>
-
             <Form.Group className="mb-3">
-              <Form.Label>Main Description</Form.Label>
-              <FloatingLabel controlId="floatingTextarea2">
-                <Form.Control
-                  as="textarea"
-                  style={{ height: "100px" }}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </FloatingLabel>
-            </Form.Group>
-
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-                alignItems: "center",
-                marginBottom: "30px",
-              }}
-            >
-              <Form.Group style={{ width: "80%" }}>
-                <Form.Label>Description Points</Form.Label>
-                <FloatingLabel controlId="floatingTextarea2">
-                  <Form.Control
-                    as="textarea"
-                    style={{ height: "30px" }}
-                    value={descName}
-                    onChange={(e) => setDescName(e.target.value)}
-                  />
-                </FloatingLabel>
-              </Form.Group>
-
-              <i
-                className="fa-solid fa-plus"
-                style={{ paddingTop: "30px", cursor: "pointer" }}
-                onClick={() => queryAdder()}
+              <Form.Label>Link</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={(e) => setLink(e.target.value)}
               />
-            </div>
-
-            <Form.Group className="mb-3">
-              <ul style={{ listStyle: "disc" }}>
-                {desc?.map((i, index) => (
-                  <li key={index}>
-                    {" "}
-                    {i}{" "}
-                    <i
-                      className="fa-solid fa-minus"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => queryRemover(index)}
-                    />{" "}
-                  </li>
-                ))}
-              </ul>
             </Form.Group>
 
             <Button
@@ -298,6 +269,14 @@ const Ads = () => {
                     </td>
 
                     <td>{data?.createdAt?.substr(0, 10)} </td>
+                    <td>
+                      <span className="flexCont">
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => deleteHandler()}
+                        />
+                      </span>
+                    </td>
                   </tr>
                 </tbody>
               </Table>
@@ -310,12 +289,12 @@ const Ads = () => {
           <p className="desc"> {data?.title} </p>
         </div>
 
-        <div className="InfoBox mt-5">
+        <div className="InfoBox">
           <p className="title">Main Description</p>
           <p className="desc"> {data?.description} </p>
         </div>
 
-        <div className="InfoBox mt-5">
+        <div className="InfoBox">
           <p className="title">Small Description</p>
           {data?.desc?.map((i, index) => (
             <p className="desc" key={index}>
@@ -323,6 +302,11 @@ const Ads = () => {
               {i}{" "}
             </p>
           ))}
+        </div>
+
+        <div className="InfoBox">
+          <p className="title">Title</p>
+          <p className="desc"> {data?.title} </p>
         </div>
       </section>
     </>

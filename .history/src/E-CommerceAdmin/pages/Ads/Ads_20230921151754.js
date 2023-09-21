@@ -2,15 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import HOC from "../../layout/HOC";
-import {
-  Table,
-  Modal,
-  Form,
-  Button,
-  Alert,
-  Spinner,
-  FloatingLabel,
-} from "react-bootstrap";
+import { Table, Modal, Form, Button, Alert, Spinner ,FloatingLabel } from "react-bootstrap";
 import axios from "axios";
 import { Store } from "react-notifications-component";
 
@@ -129,6 +121,13 @@ const Ads = () => {
         <Modal.Body>
           <Form onSubmit={postHandler}>
             <Form.Group className="mb-3">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
               <Form.Label>Image</Form.Label>
               <Form.Control
                 type="file"
@@ -145,7 +144,7 @@ const Ads = () => {
             <Form.Group className="mb-3">
               <Form.Label>Description Image</Form.Label>
               <Form.Control
-                type="file"
+           type="file"
                 onChange={(e) => setImages(e.target.files[0])}
               />
             </Form.Group>
@@ -156,7 +155,9 @@ const Ads = () => {
                 onChange={(e) => setTitle(e.target.value)}
               />
             </Form.Group>
+          
 
+          
             <Form.Group className="mb-3">
               <Form.Label>Main Description</Form.Label>
               <FloatingLabel controlId="floatingTextarea2">
@@ -197,7 +198,7 @@ const Ads = () => {
 
             <Form.Group className="mb-3">
               <ul style={{ listStyle: "disc" }}>
-                {desc?.map((i, index) => (
+                {descriptionPoints?.map((i, index) => (
                   <li key={index}>
                     {" "}
                     {i}{" "}

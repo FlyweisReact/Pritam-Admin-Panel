@@ -2,15 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import HOC from "../../layout/HOC";
-import {
-  Table,
-  Modal,
-  Form,
-  Button,
-  Alert,
-  Spinner,
-  FloatingLabel,
-} from "react-bootstrap";
+import { Table, Modal, Form, Button, Alert, Spinner } from "react-bootstrap";
 import axios from "axios";
 import { Store } from "react-notifications-component";
 
@@ -67,7 +59,7 @@ const Ads = () => {
     payload.append("description", description);
     payload.append("banner", banner);
     Array.from(desc).forEach((img) => {
-      payload.append("desc", img);
+      fd.append("desc", img);
     });
 
     const postHandler = async (e) => {
@@ -128,88 +120,10 @@ const Ads = () => {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={postHandler}>
-            <Form.Group className="mb-3">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => setImage(e.target.files[0])}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Main Image</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => setBanner(e.target.files[0])}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Description Image</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => setImages(e.target.files[0])}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Main Description</Form.Label>
-              <FloatingLabel controlId="floatingTextarea2">
-                <Form.Control
-                  as="textarea"
-                  style={{ height: "100px" }}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </FloatingLabel>
-            </Form.Group>
-
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-                alignItems: "center",
-                marginBottom: "30px",
-              }}
-            >
-              <Form.Group style={{ width: "80%" }}>
-                <Form.Label>Description Points</Form.Label>
-                <FloatingLabel controlId="floatingTextarea2">
-                  <Form.Control
-                    as="textarea"
-                    style={{ height: "30px" }}
-                    value={descName}
-                    onChange={(e) => setDescName(e.target.value)}
-                  />
-                </FloatingLabel>
-              </Form.Group>
-
-              <i
-                className="fa-solid fa-plus"
-                style={{ paddingTop: "30px", cursor: "pointer" }}
-                onClick={() => queryAdder()}
-              />
-            </div>
-
-            <Form.Group className="mb-3">
-              <ul style={{ listStyle: "disc" }}>
-                {desc?.map((i, index) => (
-                  <li key={index}>
-                    {" "}
-                    {i}{" "}
-                    <i
-                      className="fa-solid fa-minus"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => queryRemover(index)}
-                    />{" "}
-                  </li>
-                ))}
-              </ul>
-            </Form.Group>
+        <Form.Group>
+          
+        </Form.Group>
 
             <Button
               style={{
@@ -323,6 +237,11 @@ const Ads = () => {
               {i}{" "}
             </p>
           ))}
+        </div>
+
+        <div className="InfoBox mt-5">
+          <p className="title">Title</p>
+          <p className="desc"> {data?.title} </p>
         </div>
       </section>
     </>

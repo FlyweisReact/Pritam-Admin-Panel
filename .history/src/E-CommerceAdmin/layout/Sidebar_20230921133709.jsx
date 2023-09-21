@@ -134,8 +134,8 @@ const Sidebar = ({ hamb, setHamb }) => {
     },
     {
       icon: <i className="fa-solid fa-image text-xl mr-3 rounded-full" />,
-      link: "/office",
-      name: "Offices",
+      link: "/socialLinks",
+      name: "Social Links",
     },
   ];
 

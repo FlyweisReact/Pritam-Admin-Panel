@@ -24,8 +24,6 @@ import NewsLetter from "./E-CommerceAdmin/pages/Newsletter/NewsLetter";
 import About from "./E-CommerceAdmin/pages/About/About";
 import Banner from "./E-CommerceAdmin/pages/Banner/Banner";
 import Profile from "./E-CommerceAdmin/pages/Profile/Profile";
-import SocialLinks from "./E-CommerceAdmin/pages/SocialLinks/SocialLinks";
-import Office from "./E-CommerceAdmin/pages/Office/Office";
 
 function App() {
   return (
@@ -64,8 +62,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/banner" element={<Banner />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/socialLinks" element={<SocialLinks />} />
-        <Route path="/office" element={<Office />} />
+        <Route path="/socialLinks" elem
       </Routes>
     </>
   );
