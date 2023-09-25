@@ -115,7 +115,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <section className="dashboard-comp">
+      <section className="">
         {card.map((card, index) => {
           return (
             <div

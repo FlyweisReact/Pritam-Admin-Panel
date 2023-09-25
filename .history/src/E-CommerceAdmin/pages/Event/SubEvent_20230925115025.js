@@ -13,16 +13,17 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 import { Store } from "react-notifications-component";
+import { useParams } from "react-router-dom";
 
-const Freelancing = () => {
+const SubEvent = () => {
+  const { id } = useParams();
   const [modalShow, setModalShow] = useState(false);
   const [descModal, setDescModal] = useState(false);
   const [desc, setDesc] = useState([]);
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
-  const [id, setId] = useState(null);
+  const [subId, setId] = useState(null);
   const [edit, setEdit] = useState(false);
-
   const token = localStorage.getItem("AdminToken");
 
   const Auth = {
@@ -35,7 +36,9 @@ const Freelancing = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get(`${Baseurl}api/v1/admin/getFreelancing`);
+      const { data } = await axios.get(
+        `${Baseurl}api/v1/admin/getSubEvent/${id}`
+      );
       setData(data.data);
       setTotal(data.data.length);
     } catch (e) {
@@ -50,7 +53,7 @@ const Freelancing = () => {
   const deleteHandler = async (id) => {
     try {
       const { data } = await axios.delete(
-        `${Baseurl}api/v1/admin/DeleteFreelancing/${id}`,
+        `${Baseurl}api/v1/admin/DeleteSubEvent/${id}`,
         Auth
       );
       const msg = data.message;
@@ -58,8 +61,8 @@ const Freelancing = () => {
         title: "",
         message: msg,
         type: "success",
-        insert: "top",
-        container: "top-center",
+        insert: "bottom",
+        container: "bottom-right",
         animationIn: ["animate__animated", "animate__fadeIn"],
         animationOut: ["animate__animated", "animate__fadeOut"],
         dismiss: {
@@ -80,10 +83,24 @@ const Freelancing = () => {
     const [title, setTitle] = useState("");
     const [mainImage, setMainImage] = useState("");
     const [desc, setDesc] = useState("");
+    const [descPoints, setDescPoints] = useState([]);
+    const [descName, setDescName] = useState("");
+
+    const query_adder = () => {
+      setDescPoints((prev) => [...prev, descName]);
+      setDescName("");
+    };
+
+    const query_remover = (index) => {
+      setDescPoints((prev) => prev.filter((_, i) => i !== index));
+    };
 
     const payload = {
+      eventId: id,
       title,
+      mainImage,
       desc,
+      descPoints,
       image: mainImage,
     };
 
@@ -113,11 +130,11 @@ const Freelancing = () => {
       setSubmitLoading(true);
       try {
         const data = await axios.post(
-          `${Baseurl}api/v1/admin/addFreelancing`,
+          `${Baseurl}api/v1/admin/addSubEvent`,
           payload,
           Auth
         );
-        const msg = data.data.message;
+        const msg = data.data.message
         Store.addNotification({
           title: "",
           message: msg,
@@ -158,11 +175,11 @@ const Freelancing = () => {
       setSubmitLoading(true);
       try {
         const data = await axios.put(
-          `${Baseurl}api/v1/admin/updateFreelancing/${id}`,
+          `${Baseurl}api/v1/admin/updateSubEvent/${subId}`,
           payload,
           Auth
         );
-        const msg = data.data.message;
+        const msg = data.data.message
         Store.addNotification({
           title: "",
           message: msg,
@@ -203,14 +220,15 @@ const Freelancing = () => {
         {...props}
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        size="lg"
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            { edit ? "Edit" : " Create New"}
+            { edit ? "Edit" : "Create New"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={edit ? putHandler : postHandler}>
+          <Form onSubmit={edit ?putHandler : postHandler}>
             {imageLoading === true ? (
               <Spinner animation="border" role="status" />
             ) : (
@@ -245,6 +263,46 @@ const Freelancing = () => {
                   onChange={(e) => setDesc(e.target.value)}
                 />
               </FloatingLabel>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description Points</Form.Label>
+              <div className="d-flex gap-2" style={{ alignItems: "center" }}>
+                <div style={{ width: "90%", margin: "0" }}>
+                  <Form.Control
+                    type="text"
+                    onChange={(e) => setDescName(e.target.value)}
+                    value={descName}
+                  />
+                </div>
+                <i
+                  className="fa-solid fa-plus"
+                  onClick={() => query_adder()}
+                  style={{ cursor: "pointer" }}
+                ></i>
+              </div>
+              <ul className="mt-2">
+                {descPoints?.map((i, index) => (
+                  <li
+                    key={index}
+                    onClick={() => query_remover(index)}
+                    style={{ listStyle: "disc" }}
+                  >
+                    <span
+                      style={{
+                        alignItems: "center",
+                      }}
+                      className="d-flex gap-2"
+                    >
+                      {i}{" "}
+                      <i
+                        className="fa-solid fa-minus ml-2 "
+                        style={{ cursor: "pointer" }}
+                      ></i>
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </Form.Group>
 
             <Button
@@ -283,7 +341,18 @@ const Freelancing = () => {
         <Modal.Body>
           <div className="InfoBox">
             <p className="title mb-1">Description </p>
-            <p className="desc"> {desc} </p>
+            <p className="desc"> {desc?.desc} </p>
+          </div>
+          <div className="InfoBox mt-5">
+            <p className="title mb-1">Description Points </p>
+            <div className="desc">
+              {" "}
+              <ul style={{ listStyle: "disc" }}>
+                {desc?.descPoints?.map((i, index) => (
+                  <li key={index}> {i} </li>
+                ))}
+              </ul>{" "}
+            </div>
           </div>
         </Modal.Body>
       </Modal>
@@ -304,11 +373,10 @@ const Freelancing = () => {
             className="tracking-widest text-slate-900 font-semibold uppercase"
             style={{ fontSize: "20px" }}
           >
-            Freelancing ( Total : {total} )
+            Event ( Total : {total} )
           </span>
           <button
             onClick={() => {
-              setEdit(false)
               setModalShow(true);
             }}
             className="md:py-2 px-3 md:px-4 py-1 rounded-sm bg-[#0c0c0c] text-white tracking-wider"
@@ -338,14 +406,18 @@ const Freelancing = () => {
                     <tr key={index}>
                       <td>#{index + 1} </td>
                       <td>
-                        <img src={i.image} alt="" style={{ width: "100px" }} />
+                        <img
+                          src={i.mainImage}
+                          alt=""
+                          style={{ width: "100px" }}
+                        />
                       </td>
                       <td>{i.title} </td>
                       <td>
                         <button
                           className="md:py-2 px-3 md:px-4 py-1 rounded-sm bg-[#0c0c0c] text-white tracking-wider"
                           onClick={() => {
-                            setDesc(i.desc);
+                            setDesc(i);
                             setDescModal(true);
                           }}
                         >
@@ -359,7 +431,7 @@ const Freelancing = () => {
                             className="fa-solid fa-trash"
                             onClick={() => deleteHandler(i._id)}
                           />
-                            <i
+                              <i
                             className="fa-solid fa-pen-to-square"
                             onClick={() => {
                               setEdit(true);
@@ -381,4 +453,4 @@ const Freelancing = () => {
   );
 };
 
-export default HOC(Freelancing);
+export default HOC(SubEvent);

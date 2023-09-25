@@ -32,17 +32,9 @@ html {
   box-shadow: none;
   transform: scale(1);
 }
-
-.dashboard-comp{
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-}
 .cardDiv {
   cursor: pointer;
-  width: 370px;
-  height: 124px;
+  width: ;
 }
 
 .cardDiv:hover .iCOn {

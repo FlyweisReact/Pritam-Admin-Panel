@@ -206,7 +206,7 @@ const Freelancing = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            { edit ? "Edit" : " Create New"}
+            { edit ? ""}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

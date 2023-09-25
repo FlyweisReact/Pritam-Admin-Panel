@@ -14,7 +14,7 @@ import {
 import axios from "axios";
 import { Store } from "react-notifications-component";
 
-const Freelancing = () => {
+const PopularJob = () => {
   const [modalShow, setModalShow] = useState(false);
   const [descModal, setDescModal] = useState(false);
   const [desc, setDesc] = useState([]);
@@ -22,6 +22,7 @@ const Freelancing = () => {
   const [total, setTotal] = useState(0);
   const [id, setId] = useState(null);
   const [edit, setEdit] = useState(false);
+
 
   const token = localStorage.getItem("AdminToken");
 
@@ -35,7 +36,7 @@ const Freelancing = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get(`${Baseurl}api/v1/admin/getFreelancing`);
+      const { data } = await axios.get(`${Baseurl}api/v1/admin/getPopularJob`);
       setData(data.data);
       setTotal(data.data.length);
     } catch (e) {
@@ -50,7 +51,7 @@ const Freelancing = () => {
   const deleteHandler = async (id) => {
     try {
       const { data } = await axios.delete(
-        `${Baseurl}api/v1/admin/DeleteFreelancing/${id}`,
+        `${Baseurl}api/v1/admin/DeletePopularJob/${id}`,
         Auth
       );
       const msg = data.message;
@@ -80,10 +81,29 @@ const Freelancing = () => {
     const [title, setTitle] = useState("");
     const [mainImage, setMainImage] = useState("");
     const [desc, setDesc] = useState("");
+    const [descPoints, setDescPoints] = useState([]);
+    const [earnUpto, setEarnUpto] = useState("");
+    const [currency, setCurrency] = useState("");
+    const [per, setPer] = useState("");
+    const [descName, setDescName] = useState("");
+
+    const query_adder = () => {
+      setDescPoints((prev) => [...prev, descName]);
+      setDescName("");
+    };
+
+    const query_remover = (index) => {
+      setDescPoints((prev) => prev.filter((_, i) => i !== index));
+    };
 
     const payload = {
       title,
+      mainImage,
       desc,
+      descPoints,
+      earnUpto,
+      currency,
+      per,
       image: mainImage,
     };
 
@@ -113,14 +133,13 @@ const Freelancing = () => {
       setSubmitLoading(true);
       try {
         const data = await axios.post(
-          `${Baseurl}api/v1/admin/addFreelancing`,
+          `${Baseurl}api/v1/admin/addPopularJob`,
           payload,
           Auth
         );
-        const msg = data.data.message;
         Store.addNotification({
           title: "",
-          message: msg,
+          message: "Created !",
           type: "success",
           insert: "bottom",
           container: "bottom-right",
@@ -158,14 +177,13 @@ const Freelancing = () => {
       setSubmitLoading(true);
       try {
         const data = await axios.put(
-          `${Baseurl}api/v1/admin/updateFreelancing/${id}`,
+          `${Baseurl}api/v1/admin/updatePopularJob/${id}`,
           payload,
           Auth
         );
-        const msg = data.data.message;
         Store.addNotification({
           title: "",
-          message: msg,
+          message: "Edited !",
           type: "success",
           insert: "bottom",
           container: "bottom-right",
@@ -203,14 +221,15 @@ const Freelancing = () => {
         {...props}
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        size="lg"
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            { edit ? "Edit" : " Create New"}
+         {edit ? "Edit" : "   Create New"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={edit ? putHandler : postHandler}>
+          <Form onSubmit={edit ? putHandler :postHandler}>
             {imageLoading === true ? (
               <Spinner animation="border" role="status" />
             ) : (
@@ -245,6 +264,72 @@ const Freelancing = () => {
                   onChange={(e) => setDesc(e.target.value)}
                 />
               </FloatingLabel>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Earnupto</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={(e) => setEarnUpto(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Currency</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={(e) => setCurrency(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Per</Form.Label>
+              <Form.Select onChange={(e) => setPer(e.target.value)}>
+                <option>Select Your Prefrence</option>
+                <option value="Hour">Hour</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Monthly">Monthly</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description Points</Form.Label>
+              <div className="d-flex gap-2" style={{ alignItems: "center" }}>
+                <div style={{ width: "90%", margin: "0" }}>
+                  <Form.Control
+                    type="text"
+                    onChange={(e) => setDescName(e.target.value)}
+                    value={descName}
+                  />
+                </div>
+                <i
+                  className="fa-solid fa-plus"
+                  onClick={() => query_adder()}
+                  style={{ cursor: "pointer" }}
+                ></i>
+              </div>
+              <ul className="mt-2">
+                {descPoints?.map((i, index) => (
+                  <li
+                    key={index}
+                    onClick={() => query_remover(index)}
+                    style={{ listStyle: "disc" }}
+                  >
+                    <span
+                      style={{
+                        alignItems: "center",
+                      }}
+                      className="d-flex gap-2"
+                    >
+                      {i}{" "}
+                      <i
+                        className="fa-solid fa-minus ml-2 "
+                        style={{ cursor: "pointer" }}
+                      ></i>
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </Form.Group>
 
             <Button
@@ -283,7 +368,15 @@ const Freelancing = () => {
         <Modal.Body>
           <div className="InfoBox">
             <p className="title mb-1">Description </p>
-            <p className="desc"> {desc} </p>
+            <p className="desc"> {desc?.desc} </p>
+            <p className="title mt-4 mb-1">Description Points </p>
+            <div className="desc ">
+              <ul style={{ listStyle: "disc" }}>
+                {desc?.descPoints?.map((i, index) => (
+                  <li key={index}> {i} </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </Modal.Body>
       </Modal>
@@ -302,9 +395,9 @@ const Freelancing = () => {
         <div className="pb-4  w-full flex justify-between items-center">
           <span
             className="tracking-widest text-slate-900 font-semibold uppercase"
-            style={{ fontSize: "20px" }}
+            style={{ fontSize: "1.5rem" }}
           >
-            Freelancing ( Total : {total} )
+            Popular Job ( Total : {total} )
           </span>
           <button
             onClick={() => {
@@ -329,6 +422,9 @@ const Freelancing = () => {
                     <th>Image</th>
                     <th>Title</th>
                     <th>Description</th>
+                    <th>Earnt Upto</th>
+                    <th>Currency</th>
+                    <th>Per</th>
                     <th>Created At</th>
                     <th></th>
                   </tr>
@@ -338,20 +434,27 @@ const Freelancing = () => {
                     <tr key={index}>
                       <td>#{index + 1} </td>
                       <td>
-                        <img src={i.image} alt="" style={{ width: "100px" }} />
+                        <img
+                          src={i.mainImage}
+                          alt=""
+                          style={{ width: "100px" }}
+                        />
                       </td>
                       <td>{i.title} </td>
                       <td>
                         <button
                           className="md:py-2 px-3 md:px-4 py-1 rounded-sm bg-[#0c0c0c] text-white tracking-wider"
                           onClick={() => {
-                            setDesc(i.desc);
+                            setDesc(i);
                             setDescModal(true);
                           }}
                         >
                           View
                         </button>
                       </td>
+                      <td> {i.earnUpto} </td>
+                      <td> {i.currency} </td>
+                      <td> {i.per} </td>
                       <td>{i.createdAt?.substr(0, 10)} </td>
                       <td>
                         <span className="flexCont">
@@ -359,7 +462,7 @@ const Freelancing = () => {
                             className="fa-solid fa-trash"
                             onClick={() => deleteHandler(i._id)}
                           />
-                            <i
+                             <i
                             className="fa-solid fa-pen-to-square"
                             onClick={() => {
                               setEdit(true);
@@ -381,4 +484,4 @@ const Freelancing = () => {
   );
 };
 
-export default HOC(Freelancing);
+export default HOC(PopularJob);

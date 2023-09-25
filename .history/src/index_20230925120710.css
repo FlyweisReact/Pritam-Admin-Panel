@@ -35,13 +35,11 @@ html {
 
 .dashboard-comp{
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+  
 }
 .cardDiv {
   cursor: pointer;
-  width: 370px;
+  width: 378px;
   height: 124px;
 }
 

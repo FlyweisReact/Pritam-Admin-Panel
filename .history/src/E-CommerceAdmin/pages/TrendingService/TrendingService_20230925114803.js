@@ -14,7 +14,7 @@ import {
 import axios from "axios";
 import { Store } from "react-notifications-component";
 
-const Freelancing = () => {
+const TrendingService = () => {
   const [modalShow, setModalShow] = useState(false);
   const [descModal, setDescModal] = useState(false);
   const [desc, setDesc] = useState([]);
@@ -35,7 +35,9 @@ const Freelancing = () => {
 
   const fetchData = async () => {
     try {
-      const { data } = await axios.get(`${Baseurl}api/v1/admin/getFreelancing`);
+      const { data } = await axios.get(
+        `${Baseurl}api/v1/admin/getTrendingService`
+      );
       setData(data.data);
       setTotal(data.data.length);
     } catch (e) {
@@ -50,7 +52,7 @@ const Freelancing = () => {
   const deleteHandler = async (id) => {
     try {
       const { data } = await axios.delete(
-        `${Baseurl}api/v1/admin/DeleteFreelancing/${id}`,
+        `${Baseurl}api/v1/admin/DeleteTrendingService/${id}`,
         Auth
       );
       const msg = data.message;
@@ -83,6 +85,7 @@ const Freelancing = () => {
 
     const payload = {
       title,
+      mainImage,
       desc,
       image: mainImage,
     };
@@ -113,7 +116,7 @@ const Freelancing = () => {
       setSubmitLoading(true);
       try {
         const data = await axios.post(
-          `${Baseurl}api/v1/admin/addFreelancing`,
+          `${Baseurl}api/v1/admin/addTrendingService`,
           payload,
           Auth
         );
@@ -158,7 +161,7 @@ const Freelancing = () => {
       setSubmitLoading(true);
       try {
         const data = await axios.put(
-          `${Baseurl}api/v1/admin/updateFreelancing/${id}`,
+          `${Baseurl}api/v1/admin/updateTrendingService/${id}`,
           payload,
           Auth
         );
@@ -206,7 +209,7 @@ const Freelancing = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            { edit ? "Edit" : " Create New"}
+          { e}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -304,11 +307,11 @@ const Freelancing = () => {
             className="tracking-widest text-slate-900 font-semibold uppercase"
             style={{ fontSize: "20px" }}
           >
-            Freelancing ( Total : {total} )
+            Trending Service ( Total : {total} )
           </span>
           <button
             onClick={() => {
-              setEdit(false)
+              setEdit(false);
               setModalShow(true);
             }}
             className="md:py-2 px-3 md:px-4 py-1 rounded-sm bg-[#0c0c0c] text-white tracking-wider"
@@ -359,7 +362,7 @@ const Freelancing = () => {
                             className="fa-solid fa-trash"
                             onClick={() => deleteHandler(i._id)}
                           />
-                            <i
+                          <i
                             className="fa-solid fa-pen-to-square"
                             onClick={() => {
                               setEdit(true);
@@ -381,4 +384,4 @@ const Freelancing = () => {
   );
 };
 
-export default HOC(Freelancing);
+export default HOC(TrendingService);
