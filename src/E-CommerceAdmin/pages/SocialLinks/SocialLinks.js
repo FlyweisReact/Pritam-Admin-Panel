@@ -155,7 +155,7 @@ const SocialLinks = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Create New
+           { edit ? "Edit" : " Create New"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
