@@ -26,8 +26,6 @@ import Banner from "./E-CommerceAdmin/pages/Banner/Banner";
 import Profile from "./E-CommerceAdmin/pages/Profile/Profile";
 import SocialLinks from "./E-CommerceAdmin/pages/SocialLinks/SocialLinks";
 import Office from "./E-CommerceAdmin/pages/Office/Office";
-import DreamJob from "./E-CommerceAdmin/pages/DreamJob/DreamJob";
-import GetBuisness from "./E-CommerceAdmin/pages/Buisness/GetBuisness";
 
 function App() {
   return (
@@ -68,8 +66,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/socialLinks" element={<SocialLinks />} />
         <Route path="/office" element={<Office />} />
-        <Route path="/dream-job" element={<DreamJob />} />
-        <Route path="/getBuisness" element={<GetBuisness />} />
+        <Route path="/dream-job" element
       </Routes>
     </>
   );
